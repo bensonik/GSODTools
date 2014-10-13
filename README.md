@@ -6,7 +6,7 @@ GSODTools
 For the latest stable release, please refer to  
 [![doi_GSODTools_v1.0.0][1]][2].
 
-### What it is all about
+## What it is all about
 
 But to return to the actual topic: Every person dealing with long-term 
 climatological data (e.g. of daily air temperature, relative humidity, and precipitation amounts) will sooner or later stumble across the Global Summary Of Day (GSOD) climate data collection provided by the National Oceanic and Atmospheric Association (NOAA). I've been 
@@ -16,9 +16,9 @@ processing GSOD data. Therefore, I started to write this package that includes b
 some processing steps for quality assurance and gap filling.
 
 
-### Introducing the processing chain
+## Data selection and download
 
-**Getting started**
+### Getting started
 
 The starting point for each GSOD-related search query is the selection of a 
 particular station (or even multiple stations). Although a [GIS Data Locator][3] exists that allows interactive 
@@ -66,7 +66,8 @@ plot(gsod_shp)
 
 ![plot of chunk gsodReformat](figure/gsodReformat.png) 
 
-**Selecting a station**
+
+### Selecting a station
 
 Now that the list of available GSOD stations is in a reasonable format and holds
 spatial information, the next step would be to select a station you would like to
@@ -148,7 +149,8 @@ shp_kili_south@data
 ## 3 637910 99999 KILIMANJARO AIRPORT   TN   TZ       HTKJ       896 19730101 20130705
 ```
 
-**Downloading data**
+
+### Downloading data
 
 Ideally, you have now found an appropriate station you would like to acquire 
 data from. It usually takes some patience to click through the download procedure
@@ -217,7 +219,8 @@ ggplot(aes(y = TEMP, x = YEARMODA), data = gsod_moshi) +
 
 ![plot of chunk dlGsodStations_visualize](figure/dlGsodStations_visualize.png) 
 
-**Side note: `toCelsius`**
+
+### Side note: `toCelsius`
 
 You may have already noticed `toCelsius` in the preceding code chunk. Indeed, 
 this function is as small as useful, as it converts temperature values from 
@@ -238,7 +241,59 @@ toCelsius(val_fah, digits = 1)
 ##  [1] 21.2 19.0 20.3 23.3 16.5 18.1 18.6 18.6 22.4 20.3
 ```
 
+
+## Data processing
+
+So much for the generally applicable part of **GSODTools**, that is intended to
+facilitate station selection and data download. The upcoming part of this short 
+introduction focuses on data reformatting, outlier removal, and multi-step 
+imputation of missing data based on linear interpolation,
+multivariate regression, and time-series analysis. Most of the functions work 
+with objects of class 'ki.data' that has been invented in the context of 
+[JULENDAT Utilities for Environmental Data][5]. Nonetheless, I tried to implement
+compatibility to ordinary R-base classes whenever possible, and hence, one or 
+two of you might discover something useful in the upcoming functions. 
+
+
+### Reformatting
+
+The JULENDAT framework is based on unitary data formatting conventions. Besides 
+the measurement values, a number of additional columns is included holding 
+information about timezone, aggregation time, various station IDs, processing 
+level, and quality flag related to the JULENDAT processing chain. External users
+may enter referring information, or just ignore those columns, or simply not 
+execute `gsod2ki` at all. Anyway, if you are willing to adopt those conventions, 
+here is a short "How-To" based on the previously downloaded Moshi data. Note 
+that a dataset assuming continuous time steps will be generated from the initial
+data, meaning that missing daily records will be filled with "NA". 
+
+
+```r
+gsod_moshi <- dlGsodStations(usaf = moshi$USAF,
+                             start_year = 1990, end_year = 2000,
+                             dsn = paste0(getwd(), "/data/moshi/"),
+                             unzip = TRUE)
+```
+
+
+```r
+jul_moshi <- gsod2ki(data = gsod_moshi, 
+                     prm_col = c("TEMP", "MIN", "MAX"))
+head(jul_moshi)
+```
+
+```
+##              Datetime Timezone Aggregationtime PlotId EpPlotId StationId Processlevel Qualityflag TEMP  MIN  MAX
+## 1 1990-01-01 12:00:00       NA            -999     NA      xxx        NA         -999          NA   NA   NA   NA
+## 2 1990-01-02 12:00:00       NA            -999     NA      xxx        NA         -999          NA   NA   NA   NA
+## 3 1990-01-03 12:00:00       NA            -999     NA      xxx        NA         -999          NA 74.4 63.0 84.2
+## 4 1990-01-04 12:00:00       NA            -999     NA      xxx        NA         -999          NA 75.4 59.9 84.2
+## 5 1990-01-05 12:00:00       NA            -999     NA      xxx        NA         -999          NA   NA   NA   NA
+## 6 1990-01-06 12:00:00       NA            -999     NA      xxx        NA         -999          NA   NA   NA   NA
+```
+
 [1]: https://zenodo.org/badge/5994/environmentalinformatics-marburg/GSODTools.png
 [2]: http://dx.doi.org/10.5281/zenodo.12217
 [3]: http://www.climate.gov/daily-observational-data-global-summary-day-gsod-%E2%80%93-gis-data-locator
 [4]: ftp://ftp.ncdc.noaa.gov/pub/data/gsod/ish-history.csv
+[5]: https://code.google.com/p/julendat/
