@@ -13,12 +13,7 @@ For the latest stable release, please refer to
 
 ## What it is all about
 
-But to return to the actual topic: Every person dealing with long-term 
-climatological data (e.g. of daily air temperature, relative humidity, and precipitation amounts) will sooner or later stumble across the Global Summary Of Day (GSOD) climate data collection provided by the National Oceanic and Atmospheric Association (NOAA). I've been 
-recently looking for available GSOD stations in close vicinity to Mt. Kilimanjaro, Tanzania, and as I am trying to realize most of my coding work using R, I quickly 
-noticed that there are only a few packages that provide convenient tools for 
-processing GSOD data. Therefore, I started to write this package that includes both downloading data sets of selected climate stations for a given time span as well as 
-some processing steps for quality assurance and gap filling.
+Every person dealing with long-term climatological data (e.g. of daily air temperature, relative humidity, and precipitation amounts) will sooner or later stumble across the Global Summary Of Day (GSOD) climate data collection provided by the National Oceanic and Atmospheric Association (NOAA). I've been recently looking for available GSOD stations in close vicinity to Mt. Kilimanjaro, Tanzania, and as I am trying to realize most of my coding work using R, I quickly noticed that there are only a few packages that provide convenient tools for processing GSOD data. Therefore, I started to write this package that includes both downloading data sets of selected climate stations for a given time span as well as some processing steps for quality assurance and gap filling.
 
 
 ## Data selection and download
@@ -232,7 +227,7 @@ level, and quality flag related to the JULENDAT processing chain. External users
 may enter referring information, or just ignore those columns, or simply not 
 execute `gsod2ki` at all. Anyway, if you are willing to adopt those conventions, 
 here is a short "How-To" based on the previously downloaded Moshi data. Note 
-that a dataset assuming continuous time steps will be generated from the initial
+that a dataset with continuous time steps will be generated from the initial
 data, meaning that missing daily records will be filled with "NA". 
 
 ```{r dlGsodStations_2, results = "hide"}
@@ -248,8 +243,48 @@ jul_moshi <- gsod2ki(data = gsod_moshi,
 head(jul_moshi)
 ```
 
+
+### Outlier removal
+
+The continuous time series created from `gsod2ki` is an easy-to-handle input for
+further processing steps related to outlier removal and imputation of missing 
+data. Indeed, one crucial step to improve the consistency of GSOD datasets 
+is to get rid of freak values. Experience has shown that these 
+tend to occur at least at East African stations every now and then. Therefore, I adopted
+an approach suggested by [Rob Hyndman on StackOverflow][6] that is based on 
+thresholds calculated from upper and lower quantile criteria. 
+The corresponding function is called `tsOutliers`. It may be used if you would like to 
+visualize values identified as statistical outliers based on the defined upper 
+and lower quantile limit. If `index = TRUE`, it returns the outlier indices, 
+else a numeric vector holding calculated scores for each measurement value.
+
+```{r tsOutliers}
+# Visualization of statistical outliers
+outlier_id <- 
+  tsOutliers(jul_moshi$TEMP, lower_quantile = .25, upper_quantile = .75,
+             plot = TRUE, index = TRUE)
+```
+
+`outlier2na` is a wrapper function around `gsod2ki` and incorporates slight
+enhancements as it automatically replaces freak values with "NA". Still, it 
+allows the visualization of identified outliers by passing `plot = TRUE` (which 
+will not be performed now, but is good to know anyway).  
+
+```{r outlier2na}
+# Rejection of statistical outliers 
+val <- outlier2na(jul_moshi$TEMP, lower_quantile = .25, upper_quantile = .75)
+
+# Original time series
+plot(jul_moshi$TEMP, col = "grey65", type = "l")
+# Time series with outliers removed
+lines(val)
+# Outliers
+points(outlier_id, jul_moshi$TEMP[outlier_id], col = "red", pch = 20)
+```
+
 [1]: https://zenodo.org/badge/5994/environmentalinformatics-marburg/GSODTools.png
 [2]: http://dx.doi.org/10.5281/zenodo.12217
 [3]: http://www.climate.gov/daily-observational-data-global-summary-day-gsod-%E2%80%93-gis-data-locator
 [4]: ftp://ftp.ncdc.noaa.gov/pub/data/gsod/ish-history.csv
 [5]: https://code.google.com/p/julendat/
+[6]: http://stats.stackexchange.com/questions/1142/simple-algorithm-for-online-outlier-detection-of-a-generic-time-series
