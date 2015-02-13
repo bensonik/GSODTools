@@ -27,8 +27,6 @@
 #' Florian Detsch
 #' 
 #' @examples
-#' library(dplyr)
-#' 
 #' data(gsodstations)
 #' moshi <- filter(gsodstations, STATION.NAME == "MOSHI")
 #' 
