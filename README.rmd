@@ -273,13 +273,15 @@ will not be performed now, but is good to know anyway).
 ```{r outlier2na}
 # Rejection of statistical outliers 
 val <- outlier2na(jul_moshi$TEMP, lower_quantile = .25, upper_quantile = .75)
+val <- toCelsius(val, 1)
 
-# Original time series
-plot(jul_moshi$TEMP, col = "grey65", type = "l")
-# Time series with outliers removed
-lines(val)
-# Outliers
-points(outlier_id, jul_moshi$TEMP[outlier_id], col = "red", pch = 20)
+# Visualize adjusted dataset
+ggplot(aes(x = as.Date(Datetime), y = toCelsius(TEMP, 1)), data = jul_moshi) + 
+  geom_line(aes(y = val)) + 
+  geom_point(aes(y = toCelsius(TEMP, 1)), data = jul_moshi[outlier_id, ], 
+             color = "red", size = 4) + 
+  labs(x = "Time (yr)", y = expression("Temperature (" ~ degree ~ C ~ ")")) + 
+  theme_bw()
 ```
 
 [1]: https://zenodo.org/badge/5994/environmentalinformatics-marburg/GSODTools.png
