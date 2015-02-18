@@ -10,8 +10,6 @@
 #' @param data \code{data.frame}. Usually \code{data("gsodstations")}.
 #' @param elevation Logical, default is TRUE. Determines whether elevation is
 #' converted from decimeters to meters.
-#' @param coords Logical, default is TRUE. Determines whether coordinates are
-#' converted from thousandth of a degree longitude/latitude to whole degrees.
 #' @param rm_invalid_coords Logical, default is TRUE. Determines whether records
 #' with invalid coordinates, i.e. latitudes > 90 / < -90 degree and longitude > 
 #' 180 / < -180 degree, are removed from the data set. Note: if \code{coords = FALSE}, 
@@ -37,7 +35,6 @@
 #' # Reformat elevation and coordinates, and convert to spatial object.
 #' gsod_shp <- gsodReformat(data = gsodstations, 
 #'                          elevation = TRUE, 
-#'                          coords = TRUE, 
 #'                          rm_invalid_coords = TRUE, 
 #'                          df2sp = TRUE)
 #'                          
@@ -47,7 +44,6 @@
 #' @aliases gsodReformat
 gsodReformat <- function(data, 
                          elevation = TRUE, 
-#                          coords = TRUE, 
                          rm_invalid_coords = TRUE,
                          df2sp = FALSE,
                          ...) {
@@ -55,15 +51,6 @@ gsodReformat <- function(data,
   # Reformat elevation (optional)
   if (elevation)
     data$ELEV.M. <- data$ELEV.M. / 10
-  
-#   # Reformat coordinates (optional)
-#   if (coords) {
-#     for (i in c("LON", "LAT")) {
-#       data[, i] <- data[, i] / 1000
-#     }
-#   } else {
-#     rm_invalid_coords <- FALSE
-#   }
   
   # Eliminate inconsistent coordinates (optional)
   if (rm_invalid_coords) {

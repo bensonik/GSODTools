@@ -22,9 +22,6 @@ this argument will automatically be set to FALSE.}
 stations is converted from \code{data.frame} to \code{SpatialPointsDataFrame} object.}
 
 \item{...}{Additional arguments. Currently not in use.}
-
-\item{coords}{Logical, default is TRUE. Determines whether coordinates are
-converted from thousandth of a degree longitude/latitude to whole degrees.}
 }
 \value{
 An object of class \code{data.frame}, or an object of class
@@ -44,7 +41,6 @@ data(gsodstations)
 # Reformat elevation and coordinates, and convert to spatial object.
 gsod_shp <- gsodReformat(data = gsodstations,
                          elevation = TRUE,
-                         coords = TRUE,
                          rm_invalid_coords = TRUE,
                          df2sp = TRUE)
 
