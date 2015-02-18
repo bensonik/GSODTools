@@ -4,17 +4,14 @@
 \alias{gsodReformat}
 \title{Reformat list of available GSOD stations}
 \usage{
-gsodReformat(data, elevation = TRUE, coords = TRUE,
-  rm_invalid_coords = TRUE, df2sp = FALSE, ...)
+gsodReformat(data, elevation = TRUE, rm_invalid_coords = TRUE,
+  df2sp = FALSE, ...)
 }
 \arguments{
 \item{data}{\code{data.frame}. Usually \code{data("gsodstations")}.}
 
 \item{elevation}{Logical, default is TRUE. Determines whether elevation is
 converted from decimeters to meters.}
-
-\item{coords}{Logical, default is TRUE. Determines whether coordinates are
-converted from thousandth of a degree longitude/latitude to whole degrees.}
 
 \item{rm_invalid_coords}{Logical, default is TRUE. Determines whether records
 with invalid coordinates, i.e. latitudes > 90 / < -90 degree and longitude >
@@ -25,6 +22,9 @@ this argument will automatically be set to FALSE.}
 stations is converted from \code{data.frame} to \code{SpatialPointsDataFrame} object.}
 
 \item{...}{Additional arguments. Currently not in use.}
+
+\item{coords}{Logical, default is TRUE. Determines whether coordinates are
+converted from thousandth of a degree longitude/latitude to whole degrees.}
 }
 \value{
 An object of class \code{data.frame}, or an object of class

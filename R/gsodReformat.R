@@ -47,23 +47,23 @@
 #' @aliases gsodReformat
 gsodReformat <- function(data, 
                          elevation = TRUE, 
-                         coords = TRUE, 
+#                          coords = TRUE, 
                          rm_invalid_coords = TRUE,
                          df2sp = FALSE,
                          ...) {
 
   # Reformat elevation (optional)
   if (elevation)
-    data$ELEV..1M. <- data$ELEV..1M. / 10
+    data$ELEV.M. <- data$ELEV.M. / 10
   
-  # Reformat coordinates (optional)
-  if (coords) {
-    for (i in c("LON", "LAT")) {
-      data[, i] <- data[, i] / 1000
-    }
-  } else {
-    rm_invalid_coords <- FALSE
-  }
+#   # Reformat coordinates (optional)
+#   if (coords) {
+#     for (i in c("LON", "LAT")) {
+#       data[, i] <- data[, i] / 1000
+#     }
+#   } else {
+#     rm_invalid_coords <- FALSE
+#   }
   
   # Eliminate inconsistent coordinates (optional)
   if (rm_invalid_coords) {
