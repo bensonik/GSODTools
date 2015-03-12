@@ -18,9 +18,10 @@ Depends:
     dplyr,
     zoo,
     foreach,
-    Rssa,
     scales,
     reshape2,
     RColorBrewer,
     ggplot2
+Suggests:
+    Rssa
 LazyData: true
