@@ -64,6 +64,9 @@ dlGsodStations <- function(usaf,
   start_measurement <- as.numeric(substr(dl_usaf$BEGIN, 1, 4))
   end_measurement <- as.numeric(substr(dl_usaf$END, 1, 4))
 
+  if (any(is.na(start_measurement), is.na(end_measurement)))
+    return(invisible())
+  
   if (is.na(start_year))
     start_year <- start_measurement
   if (is.na(end_year))
