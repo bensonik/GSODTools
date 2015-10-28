@@ -93,6 +93,9 @@ dlGsodStations <- function(usaf,
     dlurl <- paste0("ftp://ftp.ncdc.noaa.gov/pub/data/gsod/", year, "/", 
                     dlbase)
     # Destination file
+    if (!dir.exists(dsn))
+      dir.create(dsn)
+    
     dlfile <- paste0(dsn, "/", dlbase)
     
     # Check if destination file already exists, else proceed to download
