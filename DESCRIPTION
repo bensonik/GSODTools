@@ -25,3 +25,4 @@ Depends:
 Suggests:
     Rssa
 LazyData: true
+RoxygenNote: 5.0.0
