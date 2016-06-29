@@ -31,23 +31,23 @@
 #' moshi <- filter(gsodstations, STATION.NAME == "MOSHI")
 #' 
 #' # Download data from Moshi, Tanzania, from 1990 to 1995
-#' gsod_moshi <- dlGsodStations(usaf = moshi$USAF, 
-#'                              start_year = 1990, end_year = 1995, 
-#'                              dsn = paste0(getwd(), "/data/moshi/"), 
-#'                              unzip = TRUE)
+#' gsod_moshi <- getGSOD(usaf = moshi$USAF, 
+#'                       start_year = 1990, end_year = 1995, 
+#'                       dsn = paste0(getwd(), "/data/moshi/"), 
+#'                       unzip = TRUE)
 #' 
 #' # Plot temperature data (but: time series not continuous!)                                                         
 #' plot(gsod_moshi$TEMP, type = "l")
 #' 
-#' @export dlGsodStations
-#' @aliases dlGsodStations
-dlGsodStations <- function(usaf,
-                           start_year = NA, 
-                           end_year = NA,
-                           dsn = ".", 
-                           unzip = FALSE, 
-                           rm_gz = FALSE,
-                           ...) {
+#' @export getGSOD
+#' @aliases getGSOD
+getGSOD <- function(usaf,
+                    start_year = NA, 
+                    end_year = NA,
+                    dsn = ".", 
+                    unzip = FALSE, 
+                    rm_gz = FALSE,
+                    ...) {
   
   # Set `rm_gz = FALSE` in case `unzip = FALSE`
   rm_gz <- ifelse(unzip, rm_gz, FALSE)
