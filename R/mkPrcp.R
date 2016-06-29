@@ -46,10 +46,10 @@ mkPrcp <- function(country, dsn = getwd(), ref_ext = NULL, rds = NULL, chirps = 
     suppressWarnings(
       lst_gsod <- foreach(i = id_avl, .packages = "GSODTools") %dopar% {
         usaf <- gsod_shp@data[i, "USAF"]
-        GSODTools::dlGsodStations(usaf = usaf, 
-                                  dsn = paste(dsn, usaf, sep = "/"), unzip = TRUE, 
-                                  start_year = substr(start_date, 1, 4), 
-                                  end_year = substr(end_date, 1, 4))
+        getGSOD(usaf = usaf, 
+                dsn = paste(dsn, usaf, sep = "/"), unzip = TRUE, 
+                start_year = substr(start_date, 1, 4), 
+                end_year = substr(end_date, 1, 4))
       }
     )
   }

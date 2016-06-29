@@ -10,7 +10,7 @@ gsod2ki(data, date_col = "YEARMODA", prm_col = "TEMP", time_step = "day",
   save_output = FALSE, df2ki = FALSE, ...)
 }
 \arguments{
-\item{data}{\code{data.frame}. Input data, e.g. from \code{\link{dlGsodStations}}.}
+\item{data}{\code{data.frame}. Input data, e.g. from \code{\link{getGSOD}}.}
 
 \item{date_col}{Character or numeric, default is "YEARMODA". Indicates the 
 date column.}
@@ -59,10 +59,10 @@ library(dplyr)
 data(gsodstations)
 moshi <- filter(gsodstations, STATION.NAME == "MOSHI")
 
-gsod_moshi <- dlGsodStations(usaf = moshi$USAF, 
-                             start_year = 1990, end_year = 1995, 
-                             dsn = paste0(getwd(), "/data/moshi/"), 
-                             unzip = TRUE)
+gsod_moshi <- getGSOD(usaf = moshi$USAF, 
+                      start_year = 1990, end_year = 1995, 
+                      dsn = paste0(getwd(), "/data/moshi/"), 
+                      unzip = TRUE)
 
 # Conversion to KiLi SP1 Julendat standard format
 jul_moshi <- gsod2ki(data = gsod_moshi, 

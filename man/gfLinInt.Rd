@@ -33,10 +33,10 @@ library(dplyr)
 data(gsodstations)
 moshi <- filter(gsodstations, STATION.NAME == "MOSHI")
 
-gsod_moshi <- dlGsodStations(usaf = moshi$USAF,
-                             start_year = 1990, end_year = 1995,
-                             dsn = paste0(getwd(), "/data/moshi/"),
-                             unzip = TRUE)
+gsod_moshi <- getGSOD(usaf = moshi$USAF,
+                      start_year = 1990, end_year = 1995,
+                      dsn = paste0(getwd(), "/data/moshi/"),
+                      unzip = TRUE)
 
 # Conversion to KiLi SP1 `ki.data` object
 ki_moshi <- gsod2ki(data = gsod_moshi,

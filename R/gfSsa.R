@@ -31,10 +31,10 @@
 #' data(gsodstations)
 #' gar <- filter(gsodstations, STATION.NAME == "GARISSA")
 #' 
-#' gsod_gar <- dlGsodStations(usaf = gar$USAF,
-#'                            start_year = 1990, end_year = 1995,
-#'                            dsn = paste0(getwd(), "/data/gar/"),
-#'                            unzip = TRUE)
+#' gsod_gar <- getGSOD(usaf = gar$USAF,
+#'                     start_year = 1990, end_year = 1995,
+#'                     dsn = paste0(getwd(), "/data/gar/"),
+#'                     unzip = TRUE)
 #' 
 #' # Conversion to KiLi SP1 `ki.data` object
 #' ki_gar <- gsod2ki(data = gsod_gar,

@@ -5,7 +5,7 @@
 #' (Julendat, see https://code.google.com/p/julendat/) and, optionally, to an 
 #' object of class \code{ki.data}. 
 #' 
-#' @param data \code{data.frame}. Input data, e.g. from \code{\link{dlGsodStations}}. 
+#' @param data \code{data.frame}. Input data, e.g. from \code{\link{getGSOD}}. 
 #' @param date_col Character or numeric, default is "YEARMODA". Indicates the 
 #' date column.
 #' @param prm_col Character or numeric, default is "TEMP". Indicates the 
@@ -42,10 +42,10 @@
 #' data(gsodstations)
 #' moshi <- filter(gsodstations, STATION.NAME == "MOSHI")
 #' 
-#' gsod_moshi <- dlGsodStations(usaf = moshi$USAF, 
-#'                              start_year = 1990, end_year = 1995, 
-#'                              dsn = paste0(getwd(), "/data/moshi/"), 
-#'                              unzip = TRUE)
+#' gsod_moshi <- getGSOD(usaf = moshi$USAF, 
+#'                       start_year = 1990, end_year = 1995, 
+#'                       dsn = paste0(getwd(), "/data/moshi/"), 
+#'                       unzip = TRUE)
 #' 
 #' # Conversion to KiLi SP1 Julendat standard format
 #' jul_moshi <- gsod2ki(data = gsod_moshi, 

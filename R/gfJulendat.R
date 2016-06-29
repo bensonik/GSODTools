@@ -64,11 +64,11 @@
 #'   foreach(usaf = slot(shp_gsod, "data")$USAF, plot_id = station_names_abb) %do% {
 #'     
 #'     # Download and extraction
-#'     tmp_df_gsod <- dlGsodStations(usaf = usaf, 
-#'                                   start_year = 1990, end_year = 1995, 
-#'                                   dsn = paste0("data/", usaf), 
-#'                                   unzip = TRUE,
-#'                                   save_output = FALSE)
+#'     tmp_df_gsod <- getGSOD(usaf = usaf, 
+#'                            start_year = 1990, end_year = 1995, 
+#'                            dsn = paste0("data/", usaf), 
+#'                            unzip = TRUE,
+#'                            save_output = FALSE)
 #'                                   
 #'     # Remove obsolete "NC" columns
 #'     tmp_df_gsod <- tmp_df_gsod[, -grep("^NC$", names(tmp_df_gsod))]

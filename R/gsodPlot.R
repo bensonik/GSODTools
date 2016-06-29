@@ -146,9 +146,7 @@ gsodPlot <- function(fls_orig = NULL,
     
     ggplot(aes(x = DATE, y = value, colour = variable, linetype = variable), 
            data = ta.gf.df) + 
-      geom_line(,subset = .(variable == "MEAN"), colour = "grey65") +
-      geom_line(aes(x = DATE, y = value, colour = variable, linetype = variable),
-                data = ta.orig.df, ,subset = .(variable == "MEAN"), 
+      geom_line(data = subset(ta.gf.df, variable == "MEAN"), 
                 colour = "grey35") +
       stat_smooth(size = 1.2, method = "lm", se = FALSE) + 
       facet_wrap(~ PLOT, ncol = 1) + 
