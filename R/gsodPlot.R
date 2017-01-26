@@ -17,6 +17,10 @@
 #' visualize. If \code{type = "trends"}, this argument will be ignored, and 
 #' columns "TEMP", "MIN" and "MAX" must be available in \code{fls} and 
 #' \code{fls_orig}.
+#' @param ncol \code{integer}. Number of columns passed to 
+#' \code{\link{facet_wrap}}.
+#' @param type \code{character}. Display type, available options are 
+#' \code{"trends"} (default), \code{"original"}, and \code{"both"}.
 #' @param ... Additional arguments passed to \code{\link{element_text}}.
 #' 
 #' @return
@@ -42,6 +46,7 @@ gsodPlot <- function(fls_orig = NULL,
                      fls, 
                      stations, 
                      prm = "TEMP",
+                     ncol = 1L,
                      type = "trends",
                      ...) {
   
@@ -83,7 +88,7 @@ gsodPlot <- function(fls_orig = NULL,
         
     ggplot(aes(x = DATE, y = Original), data = ta.orig.df) + 
       geom_line() + 
-      facet_wrap(~ PLOT, ncol = 1) + 
+      facet_wrap(~ PLOT, ncol = ncol) + 
       scale_x_date(limits = c(start_date, end_date), 
                    breaks = seq(start_date, end_date, "2 years"), 
                    labels = date_format("%Y"), minor_breaks = date_breaks("1 year")) + 
@@ -110,7 +115,7 @@ gsodPlot <- function(fls_orig = NULL,
     ggplot(aes(x = DATE, y = value, group = variable, colour = variable), 
            data = ta.orig.gf.df.mlt) + 
       geom_line() + 
-      facet_wrap(~ PLOT, ncol = 1) + 
+      facet_wrap(~ PLOT, ncol = ncol) + 
       scale_x_date(limits = c(start_date, end_date), 
                    breaks = seq(start_date, end_date, "2 years"), 
                    labels = date_format("%Y"), minor_breaks = date_breaks("1 year")) + 
@@ -149,7 +154,7 @@ gsodPlot <- function(fls_orig = NULL,
       geom_line(data = subset(ta.gf.df, variable == "MEAN"), 
                 colour = "grey35") +
       stat_smooth(size = 1.2, method = "lm", se = FALSE) + 
-      facet_wrap(~ PLOT, ncol = 1) + 
+      facet_wrap(~ PLOT, ncol = ncol) + 
       scale_x_date(limits = c(start_date, end_date), 
                    breaks = seq(start_date, end_date, "2 years"), 
                    labels = date_format("%Y"), minor_breaks = date_breaks("1 year")) + 
