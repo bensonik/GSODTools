@@ -15,7 +15,6 @@
 #' @importFrom gmt geodist
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom reshape2 melt
-#' @importFrom rworldmap countriesLow
 #' @importFrom zoo zoo read.zoo
 #'
 #' @references NOAA (2016) Global Surface Summary of the Day, 
